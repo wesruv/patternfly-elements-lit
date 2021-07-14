@@ -1,4 +1,4 @@
-import { PFElement } from "../../pfelement/dist/pfelement";
+import { PFElement } from "../../pfelement";
 import { html, css, PropertyValues } from "lit";
 
 export class PfeBadge extends PFElement {

@@ -1,5 +1,6 @@
-import { PFElement } from "../../pfelement/dist/pfelement";
+import { PFElement } from "../../pfelement";
 import { html, css, PropertyValues } from "lit";
+import styles from "./pfe-card.scss";
 
 export class PfeCard extends PFElement {
   imgSrc: string;
@@ -9,7 +10,7 @@ export class PfeCard extends PFElement {
   }
   
   static get styles() {
-    return css`__css__`;
+    return css`${styles}`;
   }
 
   static get properties() {
