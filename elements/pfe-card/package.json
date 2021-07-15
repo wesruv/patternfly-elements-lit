@@ -17,10 +17,5 @@
   "license": "ISC",
   "dependencies": {
     "lit": "^2.0.0-rc.2"
-  },
-  "devDependencies": {
-    "@pwrs/esbuild-plugin-replace": "0.0.2",
-    "esbuild": "^0.12.15",
-    "sass": "^1.35.2"
   }
 }
