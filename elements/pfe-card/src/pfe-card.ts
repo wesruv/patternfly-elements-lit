@@ -3,7 +3,7 @@ import { html, css, PropertyValues } from "lit";
 import styles from "./pfe-card.scss";
 
 export class PfeCard extends PFElement {
-  imgSrc: string;
+  imgSrc: string | undefined;
   
   static get tag() {
     return "pfe-card";
@@ -22,9 +22,42 @@ export class PfeCard extends PFElement {
     };
   }
 
-  constructor() {
-    super();
-    this.imgSrc = "";
+  static get slots() {
+    return {
+      header: {
+        title: "Header",
+        type: "array",
+        namedSlot: true,
+        maxItems: 3,
+        items: {
+          $ref: "raw",
+        },
+      },
+      body: {
+        title: "Body",
+        type: "array",
+        namedSlot: false,
+        items: {
+          $ref: "raw",
+        },
+      },
+      footer: {
+        title: "Footer",
+        type: "array",
+        namedSlot: true,
+        maxItems: 3,
+        items: {
+          oneOf: [
+            {
+              $ref: "pfe-cta",
+            },
+            {
+              $ref: "raw",
+            },
+          ],
+        },
+      },
+    };
   }
 
   render() {

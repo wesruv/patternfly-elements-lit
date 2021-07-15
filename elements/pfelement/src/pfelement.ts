@@ -6,7 +6,10 @@ export class PFElement extends LitElement {
   static _debugLog: boolean;
   static _trackPerformance: boolean;
   static _markId: string;
-  tag: string;
+  _slotsObserver: MutationObserver | undefined;
+  tag: string | undefined;
+  pfelement: boolean | undefined;
+  slots: any;
 
   /**
    * A boolean value that indicates if the logging should be printed to the console; used for debugging.
@@ -98,6 +101,15 @@ export class PFElement extends LitElement {
     PFElement.error(`[${this.tag}${this.id ? `#${this.id}` : ``}]`, ...msgs);
   }
 
+  static get properties() {
+    return {
+      pfelement: {
+        type: Boolean,
+        reflect: true
+      }
+    }
+  }
+
   /**
    * A global definition of component types (a general way of defining the purpose of a
    * component and how it is put together).
@@ -145,13 +157,130 @@ export class PFElement extends LitElement {
     }
   }
 
-  constructor() {
-    super();
-    this.tag = "";
-  }
-
   connectedCallback() {
     super.connectedCallback();
-    this.setAttribute("pfelement", "");
+    this.pfelement = true;
+    // this.setAttribute("pfelement", "");
+
+    // If the slot definition exists, set up an observer
+    // NOTE: not sure why I needed to switch to this.constructor.slots
+    if (typeof this.constructor.slots === "object") {
+      this._slotsObserver = new MutationObserver(() => this._initializeSlots(this.constructor.tag, this.constuctor.slots));
+      this._initializeSlots(this.constructor.tag, this.constructor.slots);
+    }
+  }
+
+  /**
+   * Standard disconnected callback; fires when a componet is removed from the DOM.
+   * Add your removeEventListeners here.
+   */
+   disconnectedCallback() {
+    // if (this._cascadeObserver) this._cascadeObserver.disconnect();
+    if (this._slotsObserver) this._slotsObserver.disconnect();
+
+    // // Remove this instance from the pointer
+    // const classIdx = this._pfeClass.instances.find((item) => item !== this);
+    // delete this._pfeClass.instances[classIdx];
+
+    // const globalIdx = PFElement.allInstances.find((item) => item !== this);
+    // delete PFElement.allInstances[globalIdx];
+  }
+
+  /**
+   * Maps the defined slots into an object that is easier to query
+   */
+   _initializeSlots(tag: string, slots: any) {
+    this.log("Validate slots...");
+
+    if (this._slotsObserver) this._slotsObserver.disconnect();
+
+    // Loop over the properties provided by the schema
+    Object.keys(slots).forEach((slot) => {
+      let slotObj = slots[slot];
+
+      // Only attach the information if the data provided is a schema object
+      if (typeof slotObj === "object") {
+        let slotExists = false;
+        let result = [];
+        // If it's a named slot, look for that slot definition
+        if (slotObj.namedSlot) {
+          // Check prefixed slots
+          result = this.getSlot(`${tag}--${slot}`);
+          if (result.length > 0) {
+            slotObj.nodes = result;
+            slotExists = true;
+          }
+
+          // Check for unprefixed slots
+          result = this.getSlot(`${slot}`);
+          if (result.length > 0) {
+            slotObj.nodes = result;
+            slotExists = true;
+          }
+          // If it's the default slot, look for direct children not assigned to a slot
+        } else {
+          result = [...this.children].filter((child) => !child.hasAttribute("slot"));
+
+          if (result.length > 0) {
+            slotObj.nodes = result;
+            slotExists = true;
+          }
+        }
+
+        // If the slot exists, attach an attribute to the parent to indicate that
+        if (slotExists) {
+          this.setAttribute(`has_${slot}`, "");
+        } else {
+          this.removeAttribute(`has_${slot}`);
+        }
+      }
+    });
+
+    this.log("Slots validated.");
+
+    if (this._slotsObserver) this._slotsObserver.observe(this, { childList: true });
+  }
+
+  /**
+   * Returns a boolean statement of whether or not that slot exists in the light DOM.
+   *
+   * @param {String|Array} name The slot name.
+   * @example this.hasSlot("header");
+   */
+   hasSlot(name) {
+    if (!name) {
+      this.warn(`Please provide at least one slot name for which to search.`);
+      return;
+    }
+
+    if (typeof name === "string") {
+      return (
+        [...this.children].filter((child) => child.hasAttribute("slot") && child.getAttribute("slot") === name).length >
+        0
+      );
+    } else if (Array.isArray(name)) {
+      return name.reduce(
+        (n) =>
+          [...this.children].filter((child) => child.hasAttribute("slot") && child.getAttribute("slot") === n).length >
+          0
+      );
+    } else {
+      this.warn(`Expected hasSlot argument to be a string or an array, but it was given: ${typeof name}.`);
+      return;
+    }
+  }
+
+  /**
+   * Given a slot name, returns elements assigned to the slot as an arry.
+   * If no value is provided (i.e., `this.getSlot()`), it returns all children not assigned to a slot (without a slot attribute).
+   *
+   * @example: `this.getSlot("header")`
+   */
+  getSlot(name = "unassigned") {
+    if (name !== "unassigned") {
+      return [...this.children].filter((child) => child.hasAttribute("slot") && child.getAttribute("slot") === name);
+    } else {
+      return [...this.children].filter((child) => !child.hasAttribute("slot"));
+    }
   }
 }
