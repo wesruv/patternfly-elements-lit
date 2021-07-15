@@ -2,7 +2,9 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "start": "web-dev-server --config web-dev-server-config.mjs"
+    "start": "web-dev-server --config web-dev-server-config.mjs",
+    "dev": "lerna run build --parallel",
+    "build": "lerna run build"
   },
   "type": "module",
   "devDependencies": {
