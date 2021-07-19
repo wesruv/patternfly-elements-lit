@@ -1,42 +1,37 @@
 import {PFElement} from "@patternfly/pfelement";
-import {html, css, PropertyValues} from "lit";
+import {html, PropertyValues} from "lit";
+import styles from "./pfe-badge.scss";
 
 export class PfeBadge extends PFElement {
-    number: number;
-    threshold: number;
+  number: number = 0;
+  threshold: number = 0;
+  displayText: string = "";
 
-    static get tag() {
-        return "pfe-badge";
+  static get tag() {
+    return "pfe-badge";
+  }
+
+  static styles = styles;
+
+  static get properties() {
+    return {
+      number: {type: Number},
+      threshold: {type: Number},
+      displayText: {type: String}
     }
+  }
 
-    static get properties() {
-        return {
-            number: {type: Number},
-            threshold: {type: Number}
-        }
-    }
-
-    static get styles() {
-        return css`__css__`;
-    }
-
-    constructor() {
-        super();
-        this.number = 0;
-        this.threshold = 0;
-    }
-
-    render() {
-        return html`
-      <span>${this.number}</span>
+  render() {
+    return html`
+      <span>${this.displayText}</span>
     `;
-    }
+  }
 
-    updated(changedProperties: PropertyValues<this>) {
-        if (changedProperties.has("number")) {
-            this.textContent = this.number.toString();
-        }
+  updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has("number") || changedProperties.has("threshold")) {
+      this.displayText = this.textContent = (this.threshold && this.threshold < this.number) ? `${this.threshold.toString()}+` : this.number.toString();  
     }
+  }
 }
 
 PFElement.create(PfeBadge);

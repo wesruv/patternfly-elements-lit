@@ -1,6 +1,4 @@
 import { LitElement } from "lit";
-// import { PfeCard } from "../../pfe-card";
-// console.log(PfeCard)
 
 export class PFElement extends LitElement {
   static _debugLog: boolean;
@@ -101,7 +99,7 @@ export class PFElement extends LitElement {
     PFElement.error(`[${this.tag}${this.id ? `#${this.id}` : ``}]`, ...msgs);
   }
 
-  static get properties() {
+  protected get properties() {
     return {
       pfelement: {
         type: Boolean,

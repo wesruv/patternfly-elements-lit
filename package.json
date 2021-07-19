@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "start": "web-dev-server --config web-dev-server-config.mjs",
-    "dev": "lerna run build --parallel",
-    "build": "lerna run build"
+    "dev": "WATCH=true node scripts/build.js",
+    "build": "node scripts/build.js"
   },
   "type": "module",
   "devDependencies": {
