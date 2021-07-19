@@ -16,6 +16,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@patternfly/pfelement": "^2.0.0",
     "lit": "^2.0.0-rc.2"
+  },
+  "devDependencies": {
   }
 }

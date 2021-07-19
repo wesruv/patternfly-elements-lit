@@ -13,7 +13,7 @@
     "esbuild": "^0.12.15",
     "esbuild-sass-plugin": "^1.4.8",
     "lerna": "^3.10.7",
+    "sass": "^1.35.2",
     "typescript": "^4.3.5"
-  },
-  "dependencies": {}
+  }
 }

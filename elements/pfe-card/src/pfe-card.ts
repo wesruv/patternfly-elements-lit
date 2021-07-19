@@ -1,67 +1,65 @@
-import { PFElement } from "../../pfelement";
-import { html, css, PropertyValues } from "lit";
+import {PFElement} from "@patternfly/pfelement";
+import {html, PropertyValues} from "lit";
 import styles from "./pfe-card.scss";
 
 export class PfeCard extends PFElement {
-  imgSrc: string | undefined;
-  
-  static get tag() {
-    return "pfe-card";
-  }
-  
-  static get styles() {
-    return css`${styles}`;
-  }
+    imgSrc: string | undefined;
 
-  static get properties() {
-    return {
-      imgSrc: {
-        type: String,
-        attribute: "img-src"
-      }
-    };
-  }
+    static styles = styles;
 
-  static get slots() {
-    return {
-      header: {
-        title: "Header",
-        type: "array",
-        namedSlot: true,
-        maxItems: 3,
-        items: {
-          $ref: "raw",
-        },
-      },
-      body: {
-        title: "Body",
-        type: "array",
-        namedSlot: false,
-        items: {
-          $ref: "raw",
-        },
-      },
-      footer: {
-        title: "Footer",
-        type: "array",
-        namedSlot: true,
-        maxItems: 3,
-        items: {
-          oneOf: [
-            {
-              $ref: "pfe-cta",
+    static get tag() {
+        return "pfe-card";
+    }
+
+    // static get properties() {
+    //     return {
+    //         imgSrc: {
+    //             type: String,
+    //             attribute: "img-src"
+    //         }
+    //     };
+    // }
+
+    static get slots() {
+        return {
+            header: {
+                title: "Header",
+                type: "array",
+                namedSlot: true,
+                maxItems: 3,
+                items: {
+                    $ref: "raw",
+                },
             },
-            {
-              $ref: "raw",
+            body: {
+                title: "Body",
+                type: "array",
+                namedSlot: false,
+                items: {
+                    $ref: "raw",
+                },
             },
-          ],
-        },
-      },
-    };
-  }
+            footer: {
+                title: "Footer",
+                type: "array",
+                namedSlot: true,
+                maxItems: 3,
+                items: {
+                    oneOf: [
+                        {
+                            $ref: "pfe-cta",
+                        },
+                        {
+                            $ref: "raw",
+                        },
+                    ],
+                },
+            },
+        };
+    }
 
-  render() {
-    return html`
+    render() {
+        return html`
       <div class="pfe-card__header">
         <slot name="pfe-card--header"></slot>
       </div>
@@ -72,13 +70,13 @@ export class PfeCard extends PFElement {
         <slot name="pfe-card--footer"></slot>
       </div>
     `;
-  }
-
-  updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has("imgSrc")) {
-      this.style.backgroundImage = `url('${this.imgSrc}')`;
     }
-  }
+
+    updated(changedProperties: PropertyValues<this>) {
+        if (changedProperties.has("imgSrc")) {
+            this.style.backgroundImage = `url('${this.imgSrc}')`;
+        }
+    }
 }
 
 PFElement.create(PfeCard);
