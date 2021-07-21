@@ -1,4 +1,5 @@
 import { LitElement } from "lit";
+import { autoReveal } from "./reveal";
 
 export class PFElement extends LitElement {
   static _debugLog: boolean;
@@ -163,7 +164,7 @@ export class PFElement extends LitElement {
     // If the slot definition exists, set up an observer
     // NOTE: not sure why I needed to switch to this.constructor.slots
     if (typeof this.constructor.slots === "object") {
-      this._slotsObserver = new MutationObserver(() => this._initializeSlots(this.constructor.tag, this.constuctor.slots));
+      this._slotsObserver = new MutationObserver(() => this._initializeSlots(this.constructor.tag, this.constructor.slots));
       this._initializeSlots(this.constructor.tag, this.constructor.slots);
     }
   }
@@ -282,3 +283,5 @@ export class PFElement extends LitElement {
     }
   }
 }
+
+autoReveal(PFElement.log);

@@ -5,6 +5,7 @@ const pluginCache = new Map();
 
 esbuild.build({
   entryPoints: [
+    "elements/pfe-cta/src/pfe-cta.ts",
     "elements/pfe-card/src/pfe-card.ts",
     "elements/pfe-badge/src/pfe-badge.ts",
     "elements/pfelement/src/pfelement.ts",
@@ -27,8 +28,6 @@ esbuild.build({
   // metafileName: "module-tree.json",
   // minify: true,
   sourcemap: true,
-
-  // watch: true,
   plugins: [
     sassPlugin({
       type: "lit-css",

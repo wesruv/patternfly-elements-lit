@@ -1,5 +1,5 @@
 import {PFElement} from "@patternfly/pfelement";
-import {html, PropertyValues} from "lit";
+import {html, LitElement, PropertyValues} from "lit";
 import styles from "./pfe-badge.scss";
 
 export class PfeBadge extends PFElement {
@@ -34,4 +34,5 @@ export class PfeBadge extends PFElement {
   }
 }
 
-PFElement.create(PfeBadge);
+// PFElement.create(PfeBadge);
+customElements.define("pfe-badge", PfeBadge);
