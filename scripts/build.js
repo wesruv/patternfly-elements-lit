@@ -36,3 +36,18 @@ esbuild.build({
   ]
 }).then(result => result.stop)
   .catch(error => console.error(error));
+
+// Build some Sass
+esbuild.build({
+  entryPoints: [
+    "elements/pfelement/src/pfelement.scss",
+  ],
+  outdir: "elements/pfelement/dist",
+  watch: Boolean(process.env.WATCH) || false,
+  minify: true,
+  minifyWhitespace: true,
+  plugins: [
+    sassPlugin()
+  ]
+}).then(result => result.stop)
+.catch(error => console.error(error));
