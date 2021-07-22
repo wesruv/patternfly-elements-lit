@@ -60,15 +60,15 @@ export class PfeCard extends PFElement {
 
   render() {
     return html`
-    <div class="pfe-card__header">
-      <slot name="pfe-card--header"></slot>
-    </div>
-    <div class="pfe-card__body">
-      <slot></slot>
-    </div>
-    <div class="pfe-card__footer">
-      <slot name="pfe-card--footer"></slot>
-    </div>
+      <div class="pfe-card__header">
+        <slot name="pfe-card--header"></slot>
+      </div>
+      <div class="pfe-card__body">
+        <slot></slot>
+      </div>
+      <div class="pfe-card__footer">
+        <slot name="pfe-card--footer"></slot>
+      </div>
   `;
   }
 

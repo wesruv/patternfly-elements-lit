@@ -79,7 +79,7 @@ export class PFElement extends LitElement {
    * @example this.warn("Hello");
    */
   warn(...msgs: string[]) {
-    PFElement.warn(`[${this.tag}${this.id ? `#${this.id}` : ``}]`, ...msgs);
+    PFElement.warn(`[${this.constructor.tag}${this.id ? `#${this.id}` : ``}]`, ...msgs);
   }
 
   /**
@@ -142,6 +142,15 @@ export class PFElement extends LitElement {
       xl: "1200px", // $pf-global--breakpoint--xl: 1200px !default;
       "2xl": "1450px", // $pf-global--breakpoint--2xl: 1450px !default;
     };
+  }
+
+  /**
+   * Returns a boolean statement of whether or not this component contains any light DOM.
+   * @returns {boolean}
+   * @example if(this.hasLightDOM()) this._init();
+   */
+   hasLightDOM(): boolean {
+    return this.children.length > 0 || this.textContent.trim().length > 0;
   }
 
   static create(pfe: any) {
@@ -281,6 +290,23 @@ export class PFElement extends LitElement {
     } else {
       return [...this.children].filter((child) => !child.hasAttribute("slot"));
     }
+  }
+
+  /**
+   * A wrapper around an event dispatch to standardize formatting.
+   */
+   emitEvent(name: string, { bubbles = true, cancelable = false, composed = true, detail = {} } = {}) {
+    if (detail) this.log(`Custom event: ${name}`, JSON.stringify(detail));
+    else this.log(`Custom event: ${name}`);
+
+    this.dispatchEvent(
+      new CustomEvent(name, {
+        bubbles,
+        cancelable,
+        composed,
+        detail,
+      })
+    );
   }
 }
 

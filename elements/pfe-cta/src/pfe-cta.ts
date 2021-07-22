@@ -18,6 +18,12 @@ export class PfeCta extends PFElement {
     return "pfe-cta";
   }
 
+  static get events() {
+    return {
+      select: `${this.tag}:select`,
+    };
+  }
+
   static get properties() {
     return {
       priority: { type: String },
@@ -70,7 +76,11 @@ export class PfeCta extends PFElement {
   firstUpdated() {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener("slotchange", this._init);
-    this._init();
+
+    // NOTE: not using this since slotchange seems to be called
+    // every time and this check would cause _init to be called
+    // a second time
+    // if (this.hasLightDOM()) this._init();
   }
 
   _init() {
@@ -144,12 +154,16 @@ export class PfeCta extends PFElement {
     switch (key) {
       case "Enter":
       case 13:
-        // this.click(event);
+        this._clickHandler(event);
     }
   }
 
   _clickHandler(event) {
-    
+    this.emitEvent(PfeCta.events.select, {
+      detail: Object.assign(this.data, {
+        originEvent: event,
+      }),
+    });
   }
 }
 
