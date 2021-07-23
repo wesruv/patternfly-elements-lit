@@ -59,6 +59,20 @@ describe("<pfe-button>", () => {
     expect(shadowBtn.hasAttribute("style")).to.be.false;
   });
 
+  it("should add a disabled attribute to the light DOM button if pfe-button has a disabled attribute", async () => {
+    const el = await createFixture(element);
+    let lightDomBtn = el.querySelector("button");
+    el.setAttribute("disabled", "");
+
+    await elementUpdated(el);
+    expect(lightDomBtn.hasAttribute("disabled")).to.be.true;
+
+    el.removeAttribute("disabled");
+
+    await elementUpdated(el);
+    expect(lightDomBtn.hasAttribute("disabled")).to.be.false;
+  });
+
   it("should update the shadow dom button text if the light dom button text changes", async () => {
     const el = await createFixture(element);
     const lightDomBtn = el.querySelector("button");

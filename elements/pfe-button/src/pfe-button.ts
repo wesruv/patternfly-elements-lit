@@ -1,5 +1,5 @@
 import { PFElement } from "@patternfly/pfelement";
-import { html } from "lit";
+import { html, PropertyValues } from "lit";
 import styles from "./pfe-button.scss";
 
 // watching for changes on the _externalBtn so we can
@@ -79,15 +79,13 @@ export class PfeButton extends PFElement {
     }
   }
 
-  _disabledChanged(oldVal, newVal) {
-    if (!this._externalBtn) {
-      return;
-    }
-
-    if (newVal) {
-      this._externalBtn.setAttribute("disabled", "");
-    } else {
-      this._externalBtn.removeAttribute("disabled");
+  updated(changed: PropertyValues<this>) {
+    if (changed.has("disabled")) {
+      if (this.disabled) {
+        this._externalBtn.setAttribute("disabled", "");
+      } else {
+        this._externalBtn.removeAttribute("disabled");
+      }
     }
   }
 
