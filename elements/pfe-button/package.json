@@ -1,0 +1,23 @@
+{
+  "name": "@patternfly/pfe-button",
+  "version": "2.0.0",
+  "description": "> TODO: description",
+  "type": "module",
+  "main": "dist/pfe-button.js",
+  "module": "dist/pfe-button.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "node build.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@patternfly/pfelement": "^2.0.0",
+    "lit": "^2.0.0-rc.2"
+  },
+  "devDependencies": {
+  }
+}

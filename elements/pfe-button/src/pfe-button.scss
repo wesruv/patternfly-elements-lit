@@ -1,0 +1,139 @@
+:host {
+  display: inline-block;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+:host([variant="primary"]) button, button {
+  background-color: #06c;
+  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--ui-accent, #06c));
+  color: #fff;
+  color: var(--pfe-button--Color, var(--pfe-theme--color--ui-base--text, #fff));
+  font-size: 1rem;
+  font-size: var(--pfe-button--FontSize, var(--pf-global--FontSize--md, 1rem));
+  font-family: inherit;
+  font-family: var(--pfe-theme--font-family, inherit);
+  padding: calc(1rem / 2) 1rem;
+  padding: var(--pfe-button--Padding, calc(var(--pfe-theme--container-padding, 1rem) / 2) var(--pfe-theme--container-padding, 1rem));
+  cursor: pointer;
+  border-radius: 3px;
+  border-radius: var(--pfe-button--BorderRadius, var(--pfe-theme--surface--border-radius, 3px));
+  border: 0;
+  border: var(--pfe-button--Border, 0);
+  position: relative;
+  line-height: 1.5;
+  line-height: var(--pfe-button--LineHeight, var(--pfe-theme--line-height, 1.5));
+}
+
+:host([variant="primary"]) button::after, button::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  border: 1px solid transparent;
+  border: var(--pfe-button__after--Border, var(--pfe-theme--ui--border-width, 1px) var(--pfe-theme--ui--border-style, solid) var(--pfe-button__after--BorderColor, transparent));
+  border-radius: 3px;
+  border-radius: var(--pfe-button--BorderRadius, var(--pfe-theme--surface--border-radius, 3px));
+}
+
+:host([variant="primary"]) button:hover, :host([variant="primary"]) button:focus, button:hover, button:focus {
+  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, var(--pfe-theme--color--ui-accent--hover, #004080));
+  --pfe-button__after--Border: var(--pfe-button__after--Border--hover, var(--pfe-theme--ui--border-width, 1px) var(--pfe-theme--ui--border-style, solid) var(--pfe-button__after--BorderColor--hover, transparent));
+}
+
+:host([variant="danger"]) button {
+  background-color: #c9190b;
+  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--feedback--critical--lighter, #c9190b));
+}
+
+:host([variant="danger"]) button:hover, :host([variant="danger"]) button:focus {
+  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, var(--pfe-theme--color--feedback--critical, #a30000));
+}
+
+:host([variant="secondary"]) button,
+:host([variant="tertiary"]) button,
+:host([variant="control"]) button {
+  background-color: transparent;
+  background-color: var(--pfe-button--BackgroundColor, transparent);
+}
+
+:host([variant="secondary"]) button:hover, :host([variant="secondary"]) button:focus,
+:host([variant="tertiary"]) button:hover,
+:host([variant="tertiary"]) button:focus,
+:host([variant="control"]) button:hover,
+:host([variant="control"]) button:focus {
+  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, transparent);
+  --pfe-button__after--Border: var(--pfe-button__after--Border--hover, var(--pfe-theme--ui--border-width--md, 2px) var(--pfe-theme--ui--border-style, solid) var(--pfe-button__after--BorderColor, transparent));
+}
+
+:host([variant="secondary"]) button {
+  color: #06c;
+  color: var(--pfe-button--Color, var(--pfe-theme--color--ui-accent, #06c));
+}
+
+:host([variant="secondary"]) button::after {
+  border-color: #06c;
+  border-color: var(--pfe-button__after--BorderColor, var(--pfe-theme--color--ui-accent, #06c));
+}
+
+:host([variant="tertiary"]) button {
+  color: #151515;
+  color: var(--pfe-button--Color, var(--pfe-theme--color--text, #151515));
+}
+
+:host([variant="tertiary"]) button::after {
+  border-color: #151515;
+  border-color: var(--pfe-button__after--BorderColor, var(--pfe-theme--color--text, #151515));
+}
+
+:host([variant="control"]) button {
+  color: #151515;
+  color: var(--pfe-button--Color, var(--pfe-theme--color--text, #151515));
+  border-radius: 0;
+  border-radius: var(--pfe-button--BorderRadius, 0);
+}
+
+:host([variant="control"]) button:hover, :host([variant="control"]) button:focus {
+  --pfe-button__after--BorderColor: var(--pfe-button--BorderColor--hover, var(--pfe-theme--color--ui--border--lightest, #f0f0f0));
+}
+
+:host([variant="control"]) button:hover::after, :host([variant="control"]) button:focus::after {
+  border-bottom-width: 2px;
+  border-bottom-width: var(--pfe-theme--ui--border-width--md, 2px);
+  border-bottom-color: #06c;
+  border-bottom-color: var(--pfe-theme--color--ui-accent, #06c);
+}
+
+:host([variant="control"]) button::after {
+  border-color: #f0f0f0;
+  border-color: var(--pfe-button__after--BorderColor, var(--pfe-theme--color--ui--border--lightest, #f0f0f0));
+  border-bottom-color: #8a8d90;
+  border-bottom-color: var(--pfe-theme--color--ui--border, #8a8d90);
+}
+
+:host([variant="control"][disabled]) button {
+  background-color: #f0f0f0;
+  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--surface--lighter, #f0f0f0));
+}
+
+:host([disabled]) button {
+  background-color: #d2d2d2;
+  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--ui-disabled, #d2d2d2));
+  color: #6a6e73;
+  color: var(--pfe-button--Color, var(--pfe-theme--color--ui-disabled--text, #6a6e73));
+  pointer-events: none;
+}
+
+:host([disabled]) button::after {
+  border: 0;
+  border: var(--pfe-button__after--Border, 0);
+}
+
+:host([disabled]) button:hover, :host([disabled]) button:focus {
+  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, var(--pfe-theme--color--ui-disabled, #d2d2d2));
+  --pfe-button__after--Border: var(--pfe-button__after--Border--hover, 0);
+}
