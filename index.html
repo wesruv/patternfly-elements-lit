@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PatternFly Elements: A set of community-created web components based on PatternFly design.">
+    <title>PatternFly Elements</title>
+    <link rel="stylesheet" href="/elements/pfelement/dist/pfelement.css">
+    <script defer type="module" src="/elements/pfe-card/dist/pfe-card.js"></script>
+    <script defer type="module" src="/elements/pfe-cta/dist/pfe-cta.js"></script>
+    <style>
+      #elements-container {
+        display: flex;
+      }
+
+      pfe-card {
+        margin-right: 16px;
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <h1>PatternFly Elements</h1>
+    <div id="elements-container"></div>
+
+    <template id="card">
+      <pfe-card>
+        <pfe-cta>
+          <a href=""></a>
+        </pfe-cta>
+      </pfe-card>
+    </template>
+    <script type="module">
+      const elements = ["pfe-badge", "pfe-button", "pfe-card", "pfe-cta"];
+      const elementsContainer = document.getElementById("elements-container");
+      const fragment = document.createDocumentFragment();
+
+      elements.forEach(element => {
+        const template = document.getElementById("card");
+        const clone = template.content.cloneNode(true);
+        const cta = clone.querySelector("pfe-cta a");
+
+        cta.textContent = element;
+        cta.href = `/elements/${element}/demo`;
+
+        fragment.appendChild(clone);
+      });
+
+      elementsContainer.appendChild(fragment);
+    </script>
+  </body>
+</html>
