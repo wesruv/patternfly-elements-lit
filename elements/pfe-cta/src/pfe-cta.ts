@@ -1,5 +1,4 @@
-import { PFElement } from "@patternfly/pfelement";
-import { html } from "lit";
+import { PFElement, html } from "@patternfly/pfelement";
 import styles from "./pfe-cta.scss";
 
 const supportedTags = ["a", "button"];

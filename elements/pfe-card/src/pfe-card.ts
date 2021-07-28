@@ -1,5 +1,5 @@
-import { PFElement } from "@patternfly/pfelement";
-import { html, PropertyValues } from "lit";
+import { PFElement, html } from "@patternfly/pfelement";
+import { PropertyValues } from "lit";
 import styles from "./pfe-card.scss";
 
 export class PfeCard extends PFElement {

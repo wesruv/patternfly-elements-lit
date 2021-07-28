@@ -9,7 +9,6 @@ esbuild.build({
     "elements/pfe-card/src/pfe-card.ts",
     "elements/pfe-badge/src/pfe-badge.ts",
     "elements/pfe-button/src/pfe-button.ts",
-    "elements/pfelement/src/pfelement.ts",
   ],
   entryNames: "[dir]/../dist/[name]",
   outdir: "elements",
@@ -37,6 +36,20 @@ esbuild.build({
   ]
 }).then(result => result.stop)
   .catch(error => console.error(error));
+
+// Build PFElement
+esbuild.build({
+  entryPoints: [
+    "elements/pfelement/src/pfelement.ts",
+  ],
+  outdir: "elements/pfelement/dist",
+  format: "esm",
+  watch: Boolean(process.env.WATCH) || false,
+  bundle: true,
+  minify: true,
+  minifyWhitespace: true
+}).then(result => result.stop)
+.catch(error => console.error(error));
 
 // Build some Sass
 esbuild.build({

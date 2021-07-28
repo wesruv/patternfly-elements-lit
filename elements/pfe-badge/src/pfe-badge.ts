@@ -1,5 +1,5 @@
-import {PFElement} from "@patternfly/pfelement";
-import {html, LitElement, PropertyValues} from "lit";
+import { PFElement, html } from "@patternfly/pfelement";
+import { PropertyValues } from "lit";
 import styles from "./pfe-badge.scss";
 
 export class PfeBadge extends PFElement {
@@ -29,10 +29,9 @@ export class PfeBadge extends PFElement {
 
   updated(changedProperties: PropertyValues<this>) {
     if (changedProperties.has("number") || changedProperties.has("threshold")) {
-      this.displayText = this.textContent = (this.threshold && this.threshold < this.number) ? `${this.threshold.toString()}+` : this.number.toString();  
+      this.displayText = this.textContent = (this.threshold && this.threshold < this.number) ? `${this.threshold.toString()}+` : this.number.toString();
     }
   }
 }
 
-// PFElement.create(PfeBadge);
-customElements.define("pfe-badge", PfeBadge);
+PFElement.create(PfeBadge);

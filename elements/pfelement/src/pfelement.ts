@@ -1,4 +1,4 @@
-import { LitElement } from "lit";
+import { LitElement, html, css } from "lit";
 import { autoReveal } from "./reveal";
 
 export class PFElement extends LitElement {
@@ -311,3 +311,5 @@ export class PFElement extends LitElement {
 }
 
 autoReveal(PFElement.log);
+
+export { html, css };
