@@ -1,5 +1,6 @@
 import esbuild from "esbuild";
 import { sassPlugin } from "esbuild-sass-plugin";
+import scssTransform from "./utilities/esbuild-plugins/scss-transform/index.js";
 
 const pluginCache = new Map();
 
@@ -29,10 +30,7 @@ esbuild.build({
   // minify: true,
   sourcemap: true,
   plugins: [
-    sassPlugin({
-      type: "lit-css",
-      cache: pluginCache,
-    })
+    scssTransform
   ]
 }).then(result => result.stop)
   .catch(error => console.error(error));
