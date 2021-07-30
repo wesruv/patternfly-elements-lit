@@ -104,7 +104,8 @@ const scssTransform = function (options = {}) {
         return {
           contents: getContents(options.type, compiled),
           loader: options.type === "css" ? "css" : "js",
-          resolveDir: dirname(args.pluginData.resolveDir)
+          resolveDir: dirname(args.pluginData.resolveDir),
+          watchFiles: [args.path]
         };
       });
     },
