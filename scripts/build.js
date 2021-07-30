@@ -1,8 +1,5 @@
 import esbuild from "esbuild";
-import { sassPlugin } from "esbuild-sass-plugin";
 import scssTransform from "./utilities/esbuild-plugins/scss-transform/index.js";
-
-const pluginCache = new Map();
 
 esbuild.build({
   entryPoints: [
@@ -30,7 +27,7 @@ esbuild.build({
   // minify: true,
   sourcemap: true,
   plugins: [
-    scssTransform
+    scssTransform()
   ]
 }).then(result => result.stop)
   .catch(error => console.error(error));
@@ -59,7 +56,9 @@ esbuild.build({
   minify: true,
   minifyWhitespace: true,
   plugins: [
-    sassPlugin()
+    scssTransform({
+      type: "css"
+    })
   ]
 }).then(result => result.stop)
 .catch(error => console.error(error));
