@@ -19,5 +19,6 @@
     "lit": "^2.0.0-rc.2"
   },
   "devDependencies": {
+    "@patternfly/pfe-sass": "^1.10.1"
   }
 }

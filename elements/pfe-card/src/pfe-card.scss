@@ -1,438 +1,289 @@
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-  :host([color="darker"]), :host([color="darkest"]), :host([color="base"]), :host([color="lighter"]), :host([color="lightest"]), :host([color="accent"]), :host([color="complement"]) {
-    /* IE10+ */
-    background-color: #fff !important;
-    color: #151515 !important;
-  }
-}
+@import "../../pfe-sass/pfe-sass";
 
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-  :host {
-    /* IE10+ */
-    color: #151515 !important;
-  }
-}
+$LOCAL: card;
+
+$LOCAL-VARIABLES: (
+  // Individual padding overrides available
+  PaddingTop: calc(#{pfe-var(container-spacer)} * 2),
+  PaddingRight: calc(#{pfe-var(container-spacer)} * 2),
+  PaddingBottom: calc(#{pfe-var(container-spacer)} * 2),
+  PaddingLeft: calc(#{pfe-var(container-spacer)} * 2),
+
+  //-- Border settings
+  BorderRadius: pfe-var(surface--border-radius),
+
+  //-- Color properties
+  BackgroundColor: pfe-var(surface--base),
+  context: pfe-var(surface--base--context),
+  BackgroundPosition: center center,
+
+  spacing: pfe-var(container-spacer),
+
+  header: (
+    BackgroundColor: rgba(0, 0, 0, pfe-var(opacity)),
+    BackgroundColor--dark: rgba(255, 255, 255, pfe-var(opacity)),
+    Color:           pfe-broadcasted(text)
+  ),
+
+  footer: (
+    spacing--horizontal: calc(#{pfe-var(container-spacer)} / 2)
+  )
+
+);
+
+// Nested internal variables (pfe-local calls), maps cannot "self-reference"
+$LOCAL-VARIABLES: map-deep-merge($LOCAL-VARIABLES, (
+  // Internal spacing; elements inside the card (header, body, footer regions)
+  spacing--vertical: pfe-local(spacing),
+
+  // Combine above variables or allow single override point via variable
+  Padding: pfe-local(PaddingTop) pfe-local(PaddingRight) pfe-local(PaddingBottom) pfe-local(PaddingLeft),
+
+  //-- Border variable encompasses width, style, and color
+  Border: pfe-local(BorderWidth, 0) pfe-local(BorderStyle, solid) pfe-local(BorderColor, pfe-var(surface--border))
+));
+
+$size-small: (
+  PaddingTop:     pfe-var(container-spacer),
+  PaddingRight:   pfe-var(container-spacer),
+  PaddingBottom:  pfe-var(container-spacer),
+  PaddingLeft:    pfe-var(container-spacer)
+);
+
 
 :host {
-  --context: var(--pfe-card--context, var(--pfe-theme--color--surface--base--context, light));
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+  --context: #{pfe-local(context)};
+
+  // Start of style declarations for host element
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   justify-items: flex-start;
-  -webkit-align-self: stretch;
-      -ms-flex-item-align: stretch;
-              -ms-grid-row-align: stretch;
-          align-self: stretch;
-  padding: calc(1rem * 2) calc(1rem * 2) calc(1rem * 2) calc(1rem * 2);
-  padding: var(--pfe-card--Padding, var(--pfe-card--PaddingTop, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) var(--pfe-card--PaddingRight, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) var(--pfe-card--PaddingBottom, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) var(--pfe-card--PaddingLeft, calc(var(--pfe-theme--container-spacer, 1rem) * 2)));
-  border: 0 solid #d2d2d2;
-  border: var(--pfe-card--Border, var(--pfe-card--BorderWidth, 0) var(--pfe-card--BorderStyle, solid) var(--pfe-card--BorderColor, var(--pfe-theme--color--surface--border, #d2d2d2)));
-  border-radius: 3px;
-  border-radius: var(--pfe-card--BorderRadius, var(--pfe-theme--surface--border-radius, 3px));
+  // This allows the card to fill it's container if necessary
+  align-self: stretch;
+
+  padding:       pfe-local(Padding);
+  border:        pfe-local(Border);  // @TODO add automatic border when lightest card is on lightest background?
+  border-radius: pfe-local(BorderRadius);
+
+  // This property ensures that children in the slots do no overflow
+  // the border-radius being set on the container
   overflow: hidden;
-  background-color: #f0f0f0;
-  background-color: var(--pfe-card--BackgroundColor, var(--pfe-theme--color--surface--base, #f0f0f0));
-  background-position: center center;
-  background-position: var(--pfe-card--BackgroundPosition, center center);
-  color: #3c3f42;
-  color: var(--pfe-broadcasted--text, #3c3f42);
-}
 
-@media print {
-  :host {
-    background-color: white !important;
+  // Base colors
+  background-color:    pfe-local(BackgroundColor);
+  background-position: pfe-local(BackgroundPosition);
+  color: pfe-broadcasted(text);
+
+  // Remove background color for print
+  @include pfe-no-print-background;
+
+  // Add the border to the card for print
+  @include pfe-print-media {
+    border-radius: pfe-fetch(surface--border-radius);
+    border: pfe-fetch(surface--border-width) pfe-fetch(surface--border-style) pfe-fetch(surface--border);
+  }
+
+  @include browser-query(ie11) {
+    background-color: pfe-var(surface--lightest) !important;
+    color: pfe-var(text) !important;
     background-image: none !important;
-    -webkit-box-shadow: none !important;
-            box-shadow: none !important;
+    border-radius: pfe-fetch(surface--border-radius);
+    border: pfe-fetch(surface--border-width) pfe-fetch(surface--border-style) pfe-fetch(surface--border);
+    padding: pfe-var(container-spacer);
   }
 }
 
-@media print {
-  :host {
-    border-radius: 3px;
-    border: 1px solid #d2d2d2;
-  }
-}
+// Pull in pfe-var settings for all supported surface colors
+@include pfe-surfaces;
 
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-  :host {
-    /* IE10+ */
-    background-color: #fff !important;
-    background-color: var(--pfe-theme--color--surface--lightest, #fff) !important;
-    color: #151515 !important;
-    color: var(--pfe-theme--color--text, #151515) !important;
-    background-image: none !important;
-    border-radius: 3px;
-    border: 1px solid #d2d2d2;
-    padding: 1rem;
-    padding: var(--pfe-theme--container-spacer, 1rem);
-  }
-}
-
-:host([color="darker"]) {
-  --pfe-card--BackgroundColor: var(--pfe-theme--color--surface--darker, #3c3f42);
-  --pfe-card--context: var(--pfe-theme--color--surface--darker--context, dark);
-}
-
-:host([color="darkest"]) {
-  --pfe-card--BackgroundColor: var(--pfe-theme--color--surface--darkest, #151515);
-  --pfe-card--context: var(--pfe-theme--color--surface--darkest--context, dark);
-}
-
-:host([color="base"]) {
-  --pfe-card--BackgroundColor: var(--pfe-theme--color--surface--base, #f0f0f0);
-  --pfe-card--context: var(--pfe-theme--color--surface--base--context, light);
-}
-
-:host([color="lighter"]) {
-  --pfe-card--BackgroundColor: var(--pfe-theme--color--surface--lighter, #f0f0f0);
-  --pfe-card--context: var(--pfe-theme--color--surface--lighter--context, light);
-}
-
-:host([color="lightest"]) {
-  --pfe-card--BackgroundColor: var(--pfe-theme--color--surface--lightest, #fff);
-  --pfe-card--context: var(--pfe-theme--color--surface--lightest--context, light);
-}
-
-:host([color="accent"]) {
-  --pfe-card--BackgroundColor: var(--pfe-theme--color--surface--accent, #004080);
-  --pfe-card--context: var(--pfe-theme--color--surface--accent--context, saturated);
-}
-
-:host([color="complement"]) {
-  --pfe-card--BackgroundColor: var(--pfe-theme--color--surface--complement, #002952);
-  --pfe-card--context: var(--pfe-theme--color--surface--complement--context, saturated);
-}
-
-:host([on="dark"]) {
-  --pfe-broadcasted--text: var(--pfe-theme--color--text--on-dark, #fff);
-  --pfe-broadcasted--link: var(--pfe-theme--color--link--on-dark, #73bcf7);
-  --pfe-broadcasted--link--hover: var(--pfe-theme--color--link--hover--on-dark, #bee1f4);
-  --pfe-broadcasted--link--focus: var(--pfe-theme--color--link--focus--on-dark, #bee1f4);
-  --pfe-broadcasted--link--visited: var(--pfe-theme--color--link--visited--on-dark, #bee1f4);
-  --pfe-broadcasted--link-decoration: var(--pfe-theme--link-decoration--on-dark, none);
-  --pfe-broadcasted--link-decoration--hover: var(--pfe-theme--link-decoration--hover--on-dark, underline);
-  --pfe-broadcasted--link-decoration--focus: var(--pfe-theme--link-decoration--focus--on-dark, underline);
-  --pfe-broadcasted--link-decoration--visited: var(--pfe-theme--link-decoration--visited--on-dark, none);
-}
-
-:host([on="saturated"]) {
-  --pfe-broadcasted--text: var(--pfe-theme--color--text--on-saturated, #fff);
-  --pfe-broadcasted--link: var(--pfe-theme--color--link--on-saturated, #fff);
-  --pfe-broadcasted--link--hover: var(--pfe-theme--color--link--hover--on-saturated, #fafafa);
-  --pfe-broadcasted--link--focus: var(--pfe-theme--color--link--focus--on-saturated, #fafafa);
-  --pfe-broadcasted--link--visited: var(--pfe-theme--color--link--visited--on-saturated, #d2d2d2);
-  --pfe-broadcasted--link-decoration: var(--pfe-theme--link-decoration--on-saturated, underline);
-  --pfe-broadcasted--link-decoration--hover: var(--pfe-theme--link-decoration--hover--on-saturated, underline);
-  --pfe-broadcasted--link-decoration--focus: var(--pfe-theme--link-decoration--focus--on-saturated, underline);
-  --pfe-broadcasted--link-decoration--visited: var(--pfe-theme--link-decoration--visited--on-saturated, underline);
-}
-
-:host([on="light"]) {
-  --pfe-broadcasted--text: var(--pfe-theme--color--text, #151515);
-  --pfe-broadcasted--link: var(--pfe-theme--color--link, #06c);
-  --pfe-broadcasted--link--hover: var(--pfe-theme--color--link--hover, #004080);
-  --pfe-broadcasted--link--focus: var(--pfe-theme--color--link--focus, #004080);
-  --pfe-broadcasted--link--visited: var(--pfe-theme--color--link--visited, #6753ac);
-  --pfe-broadcasted--link-decoration: var(--pfe-theme--link-decoration, none);
-  --pfe-broadcasted--link-decoration--hover: var(--pfe-theme--link-decoration--hover, underline);
-  --pfe-broadcasted--link-decoration--focus: var(--pfe-theme--link-decoration--focus, underline);
-  --pfe-broadcasted--link-decoration--visited: var(--pfe-theme--link-decoration--visited, none);
-}
+@include pfe-contexts; // imports on="light" etc support
 
 :host([size="small"]) {
-  --pfe-card--PaddingTop: var(--pfe-theme--container-spacer, 1rem);
-  --pfe-card--PaddingRight: var(--pfe-theme--container-spacer, 1rem);
-  --pfe-card--PaddingBottom: var(--pfe-theme--container-spacer, 1rem);
-  --pfe-card--PaddingLeft: var(--pfe-theme--container-spacer, 1rem);
+  @include pfe-print-local($size-small);
 }
 
 :host([border]:not([border="false"])) {
-  --pfe-card--BorderWidth:   1px;
+  --pfe-card--BorderWidth:   #{pfe-fetch(surface--border-width)};
 }
 
-.pfe-card__header ::slotted([pfe-overflow~="top"]),
-.pfe-card__header ::slotted([overflow~="top"]), .pfe-card__body ::slotted([pfe-overflow~="top"]),
-.pfe-card__body ::slotted([overflow~="top"]), .pfe-card__footer ::slotted([pfe-overflow~="top"]),
-.pfe-card__footer ::slotted([overflow~="top"]) {
-  z-index: 1;
-  margin-top: -2rem;
-  margin-top: calc(-1 * calc(1rem * 2)) !important;
-  margin-top: calc(-1 * var(--pfe-card--PaddingTop, calc(var(--pfe-theme--container-spacer, 1rem) * 2))) !important;
-}
+// Targets the wrappers in the shadow DOM
+.pfe-card {
+  &__header,
+  &__body,
+  &__footer {
+    ::slotted([pfe-overflow~="top"]),
+    ::slotted([overflow~="top"]) {
+      z-index: 1;
+      margin-top: -2rem; //IE11 fallback
+      margin-top: calc(-1 * #{pfe-local(PaddingTop)}) !important;
+      :host([has_header]) & {
+        padding-top: pfe-local(spacing);
+      }
+    }
 
-:host([has_header]) .pfe-card__header ::slotted([pfe-overflow~="top"]), :host([has_header])
-.pfe-card__header ::slotted([overflow~="top"]), :host([has_header]) .pfe-card__body ::slotted([pfe-overflow~="top"]), :host([has_header])
-.pfe-card__body ::slotted([overflow~="top"]), :host([has_header]) .pfe-card__footer ::slotted([pfe-overflow~="top"]), :host([has_header])
-.pfe-card__footer ::slotted([overflow~="top"]) {
-  padding-top: 1rem;
-  padding-top: var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem));
-}
+    ::slotted([pfe-overflow~="right"]),
+    ::slotted([overflow~="right"]) {
+      margin-right: -2rem; //IE11 fallback
+      margin-right: calc(-1 * #{pfe-local(PaddingRight)});
+    }
 
-.pfe-card__header ::slotted([pfe-overflow~="right"]),
-.pfe-card__header ::slotted([overflow~="right"]), .pfe-card__body ::slotted([pfe-overflow~="right"]),
-.pfe-card__body ::slotted([overflow~="right"]), .pfe-card__footer ::slotted([pfe-overflow~="right"]),
-.pfe-card__footer ::slotted([overflow~="right"]) {
-  margin-right: -2rem;
-  margin-right: calc(-1 * calc(1rem * 2));
-  margin-right: calc(-1 * var(--pfe-card--PaddingRight, calc(var(--pfe-theme--container-spacer, 1rem) * 2)));
-}
+    ::slotted([pfe-overflow~="bottom"]),
+    ::slotted([overflow~="bottom"]) {
+      margin-bottom: -2rem; //IE11 fallback
+      margin-bottom: calc(-1 * calc(#{pfe-local(PaddingBottom)} + #{pfe-local(BorderRadius)}));
+      align-self: flex-end;
+    }
 
-.pfe-card__header ::slotted([pfe-overflow~="bottom"]),
-.pfe-card__header ::slotted([overflow~="bottom"]), .pfe-card__body ::slotted([pfe-overflow~="bottom"]),
-.pfe-card__body ::slotted([overflow~="bottom"]), .pfe-card__footer ::slotted([pfe-overflow~="bottom"]),
-.pfe-card__footer ::slotted([overflow~="bottom"]) {
-  margin-bottom: -2rem;
-  margin-bottom: calc(-1 * calc(calc(1rem * 2) + 3px));
-  margin-bottom: calc(-1 * calc(var(--pfe-card--PaddingBottom, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) + var(--pfe-card--BorderRadius, var(--pfe-theme--surface--border-radius, 3px))));
-  -webkit-align-self: flex-end;
-      -ms-flex-item-align: end;
-          align-self: flex-end;
-}
+    ::slotted([pfe-overflow~="left"]),
+    ::slotted([overflow~="left"]) {
+      margin-left: -2rem; //IE11 fallback
+      margin-left: calc(-1 * #{pfe-local(PaddingLeft)});
+    }
 
-.pfe-card__header ::slotted([pfe-overflow~="left"]),
-.pfe-card__header ::slotted([overflow~="left"]), .pfe-card__body ::slotted([pfe-overflow~="left"]),
-.pfe-card__body ::slotted([overflow~="left"]), .pfe-card__footer ::slotted([pfe-overflow~="left"]),
-.pfe-card__footer ::slotted([overflow~="left"]) {
-  margin-left: -2rem;
-  margin-left: calc(-1 * calc(1rem * 2));
-  margin-left: calc(-1 * var(--pfe-card--PaddingLeft, calc(var(--pfe-theme--container-spacer, 1rem) * 2)));
-}
+    ::slotted(img) {
+      max-width: 100% !important;
+      align-self: flex-start; //Don't stretch image 100% with other Flexbox items in card.
+      object-fit: cover; // Fix distortion
+    }
 
-.pfe-card__header ::slotted(img), .pfe-card__body ::slotted(img), .pfe-card__footer ::slotted(img) {
-  max-width: 100% !important;
-  -webkit-align-self: flex-start;
-      -ms-flex-item-align: start;
-          align-self: flex-start;
-  -o-object-fit: cover;
-    object-fit: cover;
-}
+    ::slotted(img:not[pfe-overflow]),
+    ::slotted(img:not[overflow]) {
+      align-self: flex-start; //Don't stretch image 100% with other Flexbox items in card.
+    }
 
-.pfe-card__header ::slotted(img:not[pfe-overflow]),
-.pfe-card__header ::slotted(img:not[overflow]), .pfe-card__body ::slotted(img:not[pfe-overflow]),
-.pfe-card__body ::slotted(img:not[overflow]), .pfe-card__footer ::slotted(img:not[pfe-overflow]),
-.pfe-card__footer ::slotted(img:not[overflow]) {
-  -webkit-align-self: flex-start;
-      -ms-flex-item-align: start;
-          align-self: flex-start;
-}
+    ::slotted(img[pfe-overflow]),
+    ::slotted(img[overflow]) {
+      max-width: unset !important;
+    }
 
-.pfe-card__header ::slotted(img[pfe-overflow]),
-.pfe-card__header ::slotted(img[overflow]), .pfe-card__body ::slotted(img[pfe-overflow]),
-.pfe-card__body ::slotted(img[overflow]), .pfe-card__footer ::slotted(img[pfe-overflow]),
-.pfe-card__footer ::slotted(img[overflow]) {
-  max-width: unset !important;
-}
+    ::slotted(img[pfe-overflow~="right"]),
+    ::slotted(img[overflow~="right"]) {
+      width: calc(100% + 2rem) !important; //IE11 fallback
+      width: calc(100% + #{pfe-local(PaddingRight)}) !important;
+    }
 
-.pfe-card__header ::slotted(img[pfe-overflow~="right"]),
-.pfe-card__header ::slotted(img[overflow~="right"]), .pfe-card__body ::slotted(img[pfe-overflow~="right"]),
-.pfe-card__body ::slotted(img[overflow~="right"]), .pfe-card__footer ::slotted(img[pfe-overflow~="right"]),
-.pfe-card__footer ::slotted(img[overflow~="right"]) {
-  width: calc(100% + 2rem) !important;
-  width: calc(100% + calc(1rem * 2)) !important;
-  width: calc(100% + var(--pfe-card--PaddingRight, calc(var(--pfe-theme--container-spacer, 1rem) * 2))) !important;
-}
+    ::slotted(img[pfe-overflow~="left"]),
+    ::slotted(img[overflow~="left"]) {
+      width: calc(100% + 2rem) !important; //IE11 fallback
+      width: calc(100% + #{pfe-local(PaddingLeft)}) !important;
+    }
 
-.pfe-card__header ::slotted(img[pfe-overflow~="left"]),
-.pfe-card__header ::slotted(img[overflow~="left"]), .pfe-card__body ::slotted(img[pfe-overflow~="left"]),
-.pfe-card__body ::slotted(img[overflow~="left"]), .pfe-card__footer ::slotted(img[pfe-overflow~="left"]),
-.pfe-card__footer ::slotted(img[overflow~="left"]) {
-  width: calc(100% + 2rem) !important;
-  width: calc(100% + calc(1rem * 2)) !important;
-  width: calc(100% + var(--pfe-card--PaddingLeft, calc(var(--pfe-theme--container-spacer, 1rem) * 2))) !important;
-}
-
-.pfe-card__header ::slotted(img[pfe-overflow~="right"][pfe-overflow~="left"]),
-.pfe-card__header ::slotted(img[overflow~="right"][overflow~="left"]), .pfe-card__body ::slotted(img[pfe-overflow~="right"][pfe-overflow~="left"]),
-.pfe-card__body ::slotted(img[overflow~="right"][overflow~="left"]), .pfe-card__footer ::slotted(img[pfe-overflow~="right"][pfe-overflow~="left"]),
-.pfe-card__footer ::slotted(img[overflow~="right"][overflow~="left"]) {
-  width: calc(100% + 4rem) !important;
-  width: calc(100% + calc(1rem * 2) + calc(1rem * 2)) !important;
-  width: calc(100% + var(--pfe-card--PaddingRight, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) + var(--pfe-card--PaddingLeft, calc(var(--pfe-theme--container-spacer, 1rem) * 2))) !important;
-}
-
-.pfe-card__header {
-  z-index: 2;
-  background-color: rgba(0, 0, 0, 0.09);
-  background-color: var(--pfe-card__header--BackgroundColor, rgba(0, 0, 0, var(--pfe-theme--opacity, 0.09)));
-  color: #3c3f42;
-  color: var(--pfe-card__header--Color, var(--pfe-broadcasted--text, #3c3f42));
-  margin-top: calc(calc(1rem * 2) * -1) !important;
-  margin-top: calc(var(--pfe-card--PaddingTop, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1) !important;
-  margin-right: calc(calc(1rem * 2) * -1);
-  margin-right: calc(var(--pfe-card--PaddingRight, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1);
-  margin-bottom: 1rem;
-  margin-bottom: var(--pfe-card--spacing--vertical, var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem)));
-  margin-left: calc(calc(1rem * 2) * -1);
-  margin-left: calc(var(--pfe-card--PaddingLeft, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1);
-  padding-top: 1rem;
-  padding-top: var(--pfe-card--spacing--vertical, var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem)));
-  padding-right: calc(1rem * 2);
-  padding-right: var(--pfe-card--PaddingRight, calc(var(--pfe-theme--container-spacer, 1rem) * 2));
-  padding-left: calc(1rem * 2);
-  padding-left: var(--pfe-card--PaddingLeft, calc(var(--pfe-theme--container-spacer, 1rem) * 2));
-  padding-bottom: 1rem;
-  padding-bottom: var(--pfe-card--spacing--vertical, var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem)));
-}
-
-:host([on="dark"]) .pfe-card__header {
-  background-color: rgba(255, 255, 255, 0.09);
-  background-color: var(--pfe-card__header--BackgroundColor--dark, rgba(255, 255, 255, var(--pfe-theme--opacity, 0.09)));
-}
-
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-  .pfe-card__header {
-    /* IE10+ */
-    background-color: #fff !important;
-    color: #151515 !important;
+    ::slotted(img[pfe-overflow~="right"][pfe-overflow~="left"]),
+    ::slotted(img[overflow~="right"][overflow~="left"]) {
+      width: calc(100% + 4rem) !important; //IE11 fallback
+      width: calc(100% + #{pfe-local(PaddingRight)} + #{pfe-local(PaddingLeft)}) !important;
+    }
   }
-}
+  &__header {
+    z-index: 2;
+    // Declare the header background color
+    background-color: pfe-local(BackgroundColor, $region: header);
+    color:            pfe-local($cssvar: Color, $region: header);
+    :host([on="dark"]) & {
+        // Declare the header background color
+      background-color: pfe-local(BackgroundColor--dark, $region: header);
+    }
+    @include browser-query(ie11) {
+      background-color: pfe-fetch(surface--lightest) !important;
+      color: pfe-fetch(text) !important;
+    }
 
-:host(:not([has_body]):not([has_footer])) .pfe-card__header {
-  margin-bottom: calc(1rem * 2);
-  margin-bottom: var(--pfe-card--PaddingBottom, calc(var(--pfe-theme--container-spacer, 1rem) * 2));
-}
+    // Margin styles on header region
+    margin-top:    calc(#{pfe-local(PaddingTop)} * -1) !important;
+    margin-right:  calc(#{pfe-local(PaddingRight)} * -1);
+    margin-bottom: pfe-local(spacing--vertical);
+    margin-left:   calc(#{pfe-local(PaddingLeft)} * -1);
 
-.pfe-card__header ::slotted([pfe-overflow~="top"]),
-.pfe-card__header ::slotted([overflow~="top"]) {
-  --pfe-card__overflow--MarginTop: calc(var(--pfe-card--PaddingTop, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1);
-}
+    // Padding for the header region
+    padding-top:    pfe-local(spacing--vertical);
+    padding-right:  pfe-local(PaddingRight);
+    padding-left:   pfe-local(PaddingLeft);
+    padding-bottom: pfe-local(spacing--vertical);
 
-:host(:not([has_header])) .pfe-card__header {
-  display: none;
-}
+    :host(:not([has_body],[has_footer])) & {
+      margin-bottom: pfe-local(PaddingBottom);
+    }
 
-:host([has_body], [has_footer]) .pfe-card__header ::slotted([pfe-overflow~="bottom"]),
-:host([has_body], [has_footer]) .pfe-card__header ::slotted([overflow~="bottom"]) {
-  --pfe-card__overflow--MarginBottom: calc(var(--pfe-card--spacing--vertical, var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem))) * -1);
-}
+    ::slotted([pfe-overflow~="top"]),
+    ::slotted([overflow~="top"]) {
+      --pfe-card__overflow--MarginTop: calc(#{pfe-local(PaddingTop)} * -1);
+    }
 
-.pfe-card__header ::slotted([pfe-overflow~="bottom"]),
-.pfe-card__header ::slotted([overflow~="bottom"]) {
-  --pfe-card__overflow--MarginBottom: calc(var(--pfe-card--PaddingBottom, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1);
-}
+    :host(:not([has_header])) & {
+      display: none;
+    }
 
-.pfe-card__header ::slotted(h1) {
-  margin-bottom: 0;
-}
+    :host([has_body],[has_footer]) & ::slotted([pfe-overflow~="bottom"]),
+    :host([has_body],[has_footer]) & ::slotted([overflow~="bottom"]) {
+      --pfe-card__overflow--MarginBottom: calc(#{pfe-local(spacing--vertical)} * -1);
+    }
 
-.pfe-card__header ::slotted(h2) {
-  margin-bottom: 0;
-}
+    ::slotted([pfe-overflow~="bottom"]),
+    ::slotted([overflow~="bottom"]) {
+      --pfe-card__overflow--MarginBottom: calc(#{pfe-local(PaddingBottom)} * -1);
+    }
 
-.pfe-card__header ::slotted(h3) {
-  margin-bottom: 0;
-}
+    @each $tag in (h1, h2, h3, h4, h5, h6) {
+      ::slotted(#{$tag}) {
+        margin-bottom: 0;
+      }
+    }
+  }
+  &__body {
+    :host(:not([has_header])) & ::slotted([pfe-overflow~="top"]),
+    :host(:not([has_header])) & ::slotted([overflow~="top"]) {
+      --pfe-card__overflow--MarginTop: calc(#{pfe-local(PaddingTop)} * -1);
+    }
 
-.pfe-card__header ::slotted(h4) {
-  margin-bottom: 0;
-}
+    ::slotted([pfe-overflow~="top"]),
+    ::slotted([overflow~="top"]) {
+      z-index: 1;
+      --pfe-card__overflow--MarginTop: calc(#{pfe-local(spacing--vertical)} * -1);
+    }
 
-.pfe-card__header ::slotted(h5) {
-  margin-bottom: 0;
-}
+    ::slotted([pfe-overflow~="bottom"]),
+    ::slotted([overflow~="bottom"]) {
+      --pfe-card__overflow--MarginBottom: calc(#{pfe-local(PaddingBottom)} * -1);
+    }
 
-.pfe-card__header ::slotted(h6) {
-  margin-bottom: 0;
-}
+    :host([has_footer]) & ::slotted([pfe-overflow~="bottom"]),
+    :host([has_footer]) & ::slotted([overflow~="bottom"]) {
+      --pfe-card__overflow--MarginBottom: calc(#{pfe-local(spacing--vertical)} * -1);
+    }
 
-:host(:not([has_header])) .pfe-card__body ::slotted([pfe-overflow~="top"]),
-:host(:not([has_header])) .pfe-card__body ::slotted([overflow~="top"]) {
-  --pfe-card__overflow--MarginTop: calc(var(--pfe-card--PaddingTop, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1);
-}
+    :host(:not([has_footer])) & {
+      margin-bottom: 0;
+    }
+  }
+  &__footer {
+    margin-top: auto; // This allows the footer to move to the very bottom
 
-.pfe-card__body ::slotted([pfe-overflow~="top"]),
-.pfe-card__body ::slotted([overflow~="top"]) {
-  z-index: 1;
-  --pfe-card__overflow--MarginTop: calc(var(--pfe-card--spacing--vertical, var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem))) * -1);
-}
+    display: flex;
+    flex-direction: pfe-local(Row, row, $region: footer);
+    flex-wrap:      pfe-local(Wrap, wrap, $region: footer);
+    // Aligns buttons and CTAs
+    align-items: pfe-local(AlignItems, baseline, $region: footer);
 
-.pfe-card__body ::slotted([pfe-overflow~="bottom"]),
-.pfe-card__body ::slotted([overflow~="bottom"]) {
-  --pfe-card__overflow--MarginBottom: calc(var(--pfe-card--PaddingBottom, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1);
-}
+    ::slotted([pfe-overflow~="bottom"]),
+    ::slotted([overflow~="bottom"]) {
+      --pfe-card__overflow--MarginBottom: calc(#{pfe-local(PaddingBottom)} * -1);
+    }
 
-:host([has_footer]) .pfe-card__body ::slotted([pfe-overflow~="bottom"]),
-:host([has_footer]) .pfe-card__body ::slotted([overflow~="bottom"]) {
-  --pfe-card__overflow--MarginBottom: calc(var(--pfe-card--spacing--vertical, var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem))) * -1);
-}
+    :host(:not([has_footer])) & {
+      display: none;
+    }
+  }
+  &__header,
+  &__body {
+    margin-bottom: pfe-local(spacing--vertical);
 
-:host(:not([has_footer])) .pfe-card__body {
-  margin-bottom: 0;
-}
-
-.pfe-card__footer {
-  margin-top: auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  flex-direction: var(--pfe-card__footer--Row, row);
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
-  -webkit-flex-wrap: var(--pfe-card__footer--Wrap, wrap);
-      -ms-flex-wrap: var(--pfe-card__footer--Wrap, wrap);
-          flex-wrap: var(--pfe-card__footer--Wrap, wrap);
-  -webkit-box-align: baseline;
-  -webkit-align-items: baseline;
-      -ms-flex-align: baseline;
-          align-items: baseline;
-  -webkit-box-align: var(--pfe-card__footer--AlignItems, baseline);
-  -webkit-align-items: var(--pfe-card__footer--AlignItems, baseline);
-      -ms-flex-align: var(--pfe-card__footer--AlignItems, baseline);
-          align-items: var(--pfe-card__footer--AlignItems, baseline);
-}
-
-.pfe-card__footer ::slotted([pfe-overflow~="bottom"]),
-.pfe-card__footer ::slotted([overflow~="bottom"]) {
-  --pfe-card__overflow--MarginBottom: calc(var(--pfe-card--PaddingBottom, calc(var(--pfe-theme--container-spacer, 1rem) * 2)) * -1);
-}
-
-:host(:not([has_footer])) .pfe-card__footer {
-  display: none;
-}
-
-.pfe-card__header, .pfe-card__body {
-  margin-bottom: 1rem;
-  margin-bottom: var(--pfe-card--spacing--vertical, var(--pfe-card--spacing, var(--pfe-theme--container-spacer, 1rem)));
-}
-
-.pfe-card__header ::slotted(p:first-child), .pfe-card__body ::slotted(p:first-child) {
-  margin-top: 0;
-}
-
-.pfe-card__header ::slotted(h1:first-child), .pfe-card__body ::slotted(h1:first-child) {
-  margin-top: 0;
-}
-
-.pfe-card__header ::slotted(h2:first-child), .pfe-card__body ::slotted(h2:first-child) {
-  margin-top: 0;
-}
-
-.pfe-card__header ::slotted(h3:first-child), .pfe-card__body ::slotted(h3:first-child) {
-  margin-top: 0;
-}
-
-.pfe-card__header ::slotted(h4:first-child), .pfe-card__body ::slotted(h4:first-child) {
-  margin-top: 0;
-}
-
-.pfe-card__header ::slotted(h5:first-child), .pfe-card__body ::slotted(h5:first-child) {
-  margin-top: 0;
-}
-
-.pfe-card__header ::slotted(h6:first-child), .pfe-card__body ::slotted(h6:first-child) {
-  margin-top: 0;
+    //-- Slotted styles for typography
+    // Remove margins from typography inside the slots
+    @each $tag in (p, h1, h2, h3, h4, h5, h6) {
+      ::slotted(#{$tag}:first-child) {
+        // Remove top margins
+        margin-top: 0;
+      }
+    }
+  }
 }

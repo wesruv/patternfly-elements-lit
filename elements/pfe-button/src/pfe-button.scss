@@ -1,3 +1,34 @@
+// Please see the pfe-sass README for guidance on using these tools
+@import "../../pfe-sass/pfe-sass";
+
+$LOCAL: button;
+
+$LOCAL-VARIABLES: (
+  BackgroundColor: pfe-var(ui-accent),
+  BackgroundColor--hover: pfe-var(ui-accent--hover),
+  Color: pfe-var(ui-base--text),
+  FontSize: pfe-var(FontSize--md),
+  Border: 0,
+  BorderRadius: pfe-var(surface--border-radius),
+  Padding: calc(#{pfe-var(container-padding)} / 2) pfe-var(container-padding),
+  LineHeight: pfe-var(line-height),
+  after: (
+    BorderColor: transparent,
+    BorderColor--hover: transparent,
+  ),
+);
+
+// Nested internal variables (pfe-local calls), maps cannot "self-reference"
+$LOCAL-VARIABLES: map-deep-merge(
+  $LOCAL-VARIABLES,
+  (
+    after: (
+      Border: pfe-var(ui--border-width) pfe-var(ui--border-style) pfe-local(BorderColor, $region: after),
+      Border--hover: pfe-var(ui--border-width) pfe-var(ui--border-style) pfe-local(BorderColor--hover, $region: after),
+    ),
+  )
+);
+
 :host {
   display: inline-block;
 }
@@ -6,134 +37,111 @@
   display: none;
 }
 
-:host([variant="primary"]) button, button {
-  background-color: #06c;
-  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--ui-accent, #06c));
-  color: #fff;
-  color: var(--pfe-button--Color, var(--pfe-theme--color--ui-base--text, #fff));
-  font-size: 1rem;
-  font-size: var(--pfe-button--FontSize, var(--pf-global--FontSize--md, 1rem));
-  font-family: inherit;
-  font-family: var(--pfe-theme--font-family, inherit);
-  padding: calc(1rem / 2) 1rem;
-  padding: var(--pfe-button--Padding, calc(var(--pfe-theme--container-padding, 1rem) / 2) var(--pfe-theme--container-padding, 1rem));
-  cursor: pointer;
-  border-radius: 3px;
-  border-radius: var(--pfe-button--BorderRadius, var(--pfe-theme--surface--border-radius, 3px));
-  border: 0;
-  border: var(--pfe-button--Border, 0);
-  position: relative;
-  line-height: 1.5;
-  line-height: var(--pfe-button--LineHeight, var(--pfe-theme--line-height, 1.5));
-}
+button {
+  :host([variant="primary"]) &,
+  & {
+    background-color: pfe-local(BackgroundColor);
+    color: pfe-local(Color);
+    font-size: pfe-local(FontSize);
+    font-family: pfe-var(font-family, $fallback: inherit);
+    padding: pfe-local(Padding);
+    cursor: pointer;
+    border-radius: pfe-local(BorderRadius);
+    border: pfe-local(Border);
+    position: relative;
+    line-height: pfe-local(LineHeight);
 
-:host([variant="primary"]) button::after, button::after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  content: "";
-  border: 1px solid transparent;
-  border: var(--pfe-button__after--Border, var(--pfe-theme--ui--border-width, 1px) var(--pfe-theme--ui--border-style, solid) var(--pfe-button__after--BorderColor, transparent));
-  border-radius: 3px;
-  border-radius: var(--pfe-button--BorderRadius, var(--pfe-theme--surface--border-radius, 3px));
-}
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: "";
+      border: pfe-local(Border, $region: after);
+      border-radius: pfe-local(BorderRadius);
+    }
 
-:host([variant="primary"]) button:hover, :host([variant="primary"]) button:focus, button:hover, button:focus {
-  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, var(--pfe-theme--color--ui-accent--hover, #004080));
-  --pfe-button__after--Border: var(--pfe-button__after--Border--hover, var(--pfe-theme--ui--border-width, 1px) var(--pfe-theme--ui--border-style, solid) var(--pfe-button__after--BorderColor--hover, transparent));
-}
+    &:hover,
+    &:focus {
+      --pfe-button--BackgroundColor: #{pfe-local(BackgroundColor--hover)};
+      --pfe-button__after--Border: #{pfe-local(Border--hover, $region: after)};
+    }
+  }
 
-:host([variant="danger"]) button {
-  background-color: #c9190b;
-  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--feedback--critical--lighter, #c9190b));
-}
+  :host([variant="danger"]) & {
+    background-color: pfe-local(BackgroundColor, pfe-var(feedback--critical--lighter));
 
-:host([variant="danger"]) button:hover, :host([variant="danger"]) button:focus {
-  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, var(--pfe-theme--color--feedback--critical, #a30000));
-}
+    &:hover,
+    &:focus {
+      --pfe-button--BackgroundColor: #{pfe-local(BackgroundColor--hover, pfe-var(feedback--critical))};
+    }
+  }
 
-:host([variant="secondary"]) button,
-:host([variant="tertiary"]) button,
-:host([variant="control"]) button {
-  background-color: transparent;
-  background-color: var(--pfe-button--BackgroundColor, transparent);
-}
+  :host([variant="secondary"]) &,
+  :host([variant="tertiary"]) &,
+  :host([variant="control"]) & {
+    background-color: pfe-local(BackgroundColor, transparent);
 
-:host([variant="secondary"]) button:hover, :host([variant="secondary"]) button:focus,
-:host([variant="tertiary"]) button:hover,
-:host([variant="tertiary"]) button:focus,
-:host([variant="control"]) button:hover,
-:host([variant="control"]) button:focus {
-  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, transparent);
-  --pfe-button__after--Border: var(--pfe-button__after--Border--hover, var(--pfe-theme--ui--border-width--md, 2px) var(--pfe-theme--ui--border-style, solid) var(--pfe-button__after--BorderColor, transparent));
-}
+    &:hover,
+    &:focus {
+      --pfe-button--BackgroundColor: #{pfe-local(BackgroundColor--hover, transparent)};
+      --pfe-button__after--Border: #{pfe-local(Border--hover, $region: after, $fallback: pfe-var(ui--border-width--md) pfe-var(ui--border-style) pfe-local(BorderColor, $region: after))};
+    }
+  }
 
-:host([variant="secondary"]) button {
-  color: #06c;
-  color: var(--pfe-button--Color, var(--pfe-theme--color--ui-accent, #06c));
-}
+  :host([variant="secondary"]) & {
+    color: pfe-local(Color, pfe-var(ui-accent));
 
-:host([variant="secondary"]) button::after {
-  border-color: #06c;
-  border-color: var(--pfe-button__after--BorderColor, var(--pfe-theme--color--ui-accent, #06c));
-}
+    &::after {
+      border-color: pfe-local(BorderColor, $region: after, $fallback: pfe-var(ui-accent));
+    }
+  }
 
-:host([variant="tertiary"]) button {
-  color: #151515;
-  color: var(--pfe-button--Color, var(--pfe-theme--color--text, #151515));
-}
+  :host([variant="tertiary"]) & {
+    color: pfe-local(Color, pfe-var(text));
 
-:host([variant="tertiary"]) button::after {
-  border-color: #151515;
-  border-color: var(--pfe-button__after--BorderColor, var(--pfe-theme--color--text, #151515));
-}
+    &::after {
+      border-color: pfe-local(BorderColor, $region: after, $fallback: pfe-var(text));
+    }
+  }
 
-:host([variant="control"]) button {
-  color: #151515;
-  color: var(--pfe-button--Color, var(--pfe-theme--color--text, #151515));
-  border-radius: 0;
-  border-radius: var(--pfe-button--BorderRadius, 0);
-}
+  :host([variant="control"]) & {
+    color: pfe-local(Color, pfe-var(text));
+    border-radius: pfe-local(BorderRadius, 0);
 
-:host([variant="control"]) button:hover, :host([variant="control"]) button:focus {
-  --pfe-button__after--BorderColor: var(--pfe-button--BorderColor--hover, var(--pfe-theme--color--ui--border--lightest, #f0f0f0));
-}
+    &:hover,
+    &:focus {
+      --pfe-button__after--BorderColor: #{pfe-local(BorderColor--hover, pfe-var(ui--border--lightest))};
+    
+      &::after {
+        border-bottom-width: pfe-var(ui--border-width--md);
+        border-bottom-color: pfe-var(ui-accent);
+      }
+    }
 
-:host([variant="control"]) button:hover::after, :host([variant="control"]) button:focus::after {
-  border-bottom-width: 2px;
-  border-bottom-width: var(--pfe-theme--ui--border-width--md, 2px);
-  border-bottom-color: #06c;
-  border-bottom-color: var(--pfe-theme--color--ui-accent, #06c);
-}
+    &::after {
+      border-color: pfe-local(BorderColor, $region: after, $fallback: pfe-var(ui--border--lightest));
+      border-bottom-color: pfe-var(ui--border);
+    }
+  }
 
-:host([variant="control"]) button::after {
-  border-color: #f0f0f0;
-  border-color: var(--pfe-button__after--BorderColor, var(--pfe-theme--color--ui--border--lightest, #f0f0f0));
-  border-bottom-color: #8a8d90;
-  border-bottom-color: var(--pfe-theme--color--ui--border, #8a8d90);
-}
+  :host([variant="control"][disabled]) & {
+    background-color: pfe-local(BackgroundColor, pfe-var(surface--lighter));
+  }
 
-:host([variant="control"][disabled]) button {
-  background-color: #f0f0f0;
-  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--surface--lighter, #f0f0f0));
-}
+  :host([disabled]) & {
+    background-color: pfe-local(BackgroundColor, pfe-var(ui-disabled));
+    color: pfe-local(Color, pfe-var(ui-disabled--text));
+    pointer-events: none;
+    &::after {
+      border: pfe-local(Border, $region: after, $fallback: 0);
+    }
 
-:host([disabled]) button {
-  background-color: #d2d2d2;
-  background-color: var(--pfe-button--BackgroundColor, var(--pfe-theme--color--ui-disabled, #d2d2d2));
-  color: #6a6e73;
-  color: var(--pfe-button--Color, var(--pfe-theme--color--ui-disabled--text, #6a6e73));
-  pointer-events: none;
-}
-
-:host([disabled]) button::after {
-  border: 0;
-  border: var(--pfe-button__after--Border, 0);
-}
-
-:host([disabled]) button:hover, :host([disabled]) button:focus {
-  --pfe-button--BackgroundColor: var(--pfe-button--BackgroundColor--hover, var(--pfe-theme--color--ui-disabled, #d2d2d2));
-  --pfe-button__after--Border: var(--pfe-button__after--Border--hover, 0);
+    &:hover,
+    &:focus {
+      --pfe-button--BackgroundColor: #{pfe-local(BackgroundColor--hover, pfe-var(ui-disabled))};
+      --pfe-button__after--Border: #{pfe-local(Border--hover, $region: after, $fallback: 0)};
+    }
+  }
 }

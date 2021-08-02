@@ -69,7 +69,7 @@
  */
 
 
-import sass from "sass";
+import sass from "node-sass";
 import { dirname, resolve } from "path";
 
 function pathResolve({ resolveDir, path, importer }) {
@@ -100,7 +100,10 @@ const scssTransform = function (options = {}) {
       });
 
       build.onLoad({ filter: /./, namespace: "scsstransform" }, (args) => {
-        const compiled = sass.renderSync({ file: args.path });
+        const compiled = sass.renderSync({
+          file: args.path,
+          includePaths: ["./node_modules/"]
+        });
         return {
           contents: getContents(options.type, compiled),
           loader: options.type === "css" ? "css" : "js",
