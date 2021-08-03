@@ -102,7 +102,8 @@ const scssTransform = function (options = {}) {
       build.onLoad({ filter: /./, namespace: "scsstransform" }, (args) => {
         const compiled = sass.renderSync({
           file: args.path,
-          includePaths: ["./node_modules/"]
+          includePaths: ["./node_modules/"],
+          outputStyle: "compressed"
         });
         return {
           contents: getContents(options.type, compiled),

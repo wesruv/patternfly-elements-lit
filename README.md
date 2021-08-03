@@ -31,6 +31,23 @@ npm run test:watch
 npm run build
 ```
 
+### Prepare the project for distribution for direct use in the browser
+```
+npm run distribute
+```
+
+This rewrites the bare module imports in the `dist` directory for each component into a path that is usable by directly by the browser. The browser usable file is currently located in a `built` file. This is a bit confusing with the `dist` directory but it's what we have at the moment.
+
+For example
+```
+import PfeCard from "@patternfly/pfe-card";
+```
+
+is rewritten to
+```
+import PfeCard from "../../pfe-card/built/pfe-card.js";
+```
+
 ## Differences from v1.0 of PatternFly Elements
 ### The PFElement base class extends LitElement
 Extending LitElement provides multiple benefits

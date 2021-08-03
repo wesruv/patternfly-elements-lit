@@ -14,7 +14,7 @@ esbuild.build({
   format: "esm",
   allowOverwrite: true,
   bundle: true,
-  external: ["@patternfly/pfelement", "lit*",],
+  external: ["@patternfly*", "lit*",],
   // splitting: true,
   treeShaking: true,
   legalComments: "linked",
