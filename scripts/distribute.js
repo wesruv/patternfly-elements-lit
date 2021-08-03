@@ -17,6 +17,7 @@ esbuild.build({
     "elements/pfe-button/dist/pfe-button.js",
     "elements/pfe-card/dist/pfe-card.js",
     "elements/pfe-cta/dist/pfe-cta.js",
+    "elements/pfe-datetime/dist/pfe-datetime.js",
     "elements/pfelement/dist/pfelement.js",
   ],
   entryNames: "[dir]/../built/[name]",

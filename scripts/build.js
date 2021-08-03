@@ -7,6 +7,7 @@ esbuild.build({
     "elements/pfe-card/src/pfe-card.ts",
     "elements/pfe-badge/src/pfe-badge.ts",
     "elements/pfe-button/src/pfe-button.ts",
+    "elements/pfe-datetime/src/pfe-datetime.ts",
   ],
   entryNames: "[dir]/../dist/[name]",
   outdir: "elements",
