@@ -8,19 +8,21 @@
  *    the dist directory?
  */
 
+import { readdirSync } from "fs";
+import { resolve } from "path";
 import esbuild from "esbuild";
 import rewritePaths from "./utilities/esbuild-plugins/rewrite-paths/index.js";
 
+const entryPointFilesExcludes = [
+  "pfe-sass",
+];
+
+const entryPoints = readdirSync(resolve("elements"), { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory() && !entryPointFilesExcludes.includes(dirent.name))
+  .map(dirent => `elements/${dirent.name}/dist/${dirent.name}.js`);
+
 esbuild.build({
-  entryPoints: [
-    "elements/pfe-avatar/dist/pfe-avatar.js",
-    "elements/pfe-badge/dist/pfe-badge.js",
-    "elements/pfe-button/dist/pfe-button.js",
-    "elements/pfe-card/dist/pfe-card.js",
-    "elements/pfe-cta/dist/pfe-cta.js",
-    "elements/pfe-datetime/dist/pfe-datetime.js",
-    "elements/pfelement/dist/pfelement.js",
-  ],
+  entryPoints,
   entryNames: "[dir]/../built/[name]",
   outdir: "elements",
   minify: true,

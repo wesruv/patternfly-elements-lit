@@ -1,15 +1,24 @@
+import { readdirSync } from "fs";
+import { resolve } from "path";
 import esbuild from "esbuild";
 import scssTransform from "./utilities/esbuild-plugins/scss-transform/index.js";
 
+// exclude pfelement and pfe-sass because there are two different build
+// steps: one for pfe-sass and one for pfelement
+const entryPointFilesExcludes = [
+  "pfe-sass",
+  "pfelement",
+];
+
+// grab all of the directories in /elements excluding directories
+// in entryPointFilesExcludes and generate an array that gets the
+// TypeScript src file for each element
+const entryPoints = readdirSync(resolve("elements"), { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory() && !entryPointFilesExcludes.includes(dirent.name))
+  .map(dirent => `elements/${dirent.name}/src/${dirent.name}.ts`);
+
 esbuild.build({
-  entryPoints: [
-    "elements/pfe-avatar/src/pfe-avatar.ts",
-    "elements/pfe-cta/src/pfe-cta.ts",
-    "elements/pfe-card/src/pfe-card.ts",
-    "elements/pfe-badge/src/pfe-badge.ts",
-    "elements/pfe-button/src/pfe-button.ts",
-    "elements/pfe-datetime/src/pfe-datetime.ts",
-  ],
+  entryPoints,
   entryNames: "[dir]/../dist/[name]",
   outdir: "elements",
   // outbase: "src",
@@ -34,33 +43,33 @@ esbuild.build({
 }).then(result => result.stop)
   .catch(error => console.error(error));
 
-// Build PFElement
-esbuild.build({
-  entryPoints: [
-    "elements/pfelement/src/pfelement.ts",
-  ],
-  outdir: "elements/pfelement/dist",
-  format: "esm",
-  watch: Boolean(process.env.WATCH) || false,
-  bundle: true,
-  minify: true,
-  minifyWhitespace: true
-}).then(result => result.stop)
-.catch(error => console.error(error));
+// // Build PFElement
+// esbuild.build({
+//   entryPoints: [
+//     "elements/pfelement/src/pfelement.ts",
+//   ],
+//   outdir: "elements/pfelement/dist",
+//   format: "esm",
+//   watch: Boolean(process.env.WATCH) || false,
+//   bundle: true,
+//   minify: true,
+//   minifyWhitespace: true
+// }).then(result => result.stop)
+// .catch(error => console.error(error));
 
-// Build some Sass
-esbuild.build({
-  entryPoints: [
-    "elements/pfelement/src/pfelement.scss",
-  ],
-  outdir: "elements/pfelement/dist",
-  watch: Boolean(process.env.WATCH) || false,
-  minify: true,
-  minifyWhitespace: true,
-  plugins: [
-    scssTransform({
-      type: "css"
-    })
-  ]
-}).then(result => result.stop)
-.catch(error => console.error(error));
+// // Build some Sass
+// esbuild.build({
+//   entryPoints: [
+//     "elements/pfelement/src/pfelement.scss",
+//   ],
+//   outdir: "elements/pfelement/dist",
+//   watch: Boolean(process.env.WATCH) || false,
+//   minify: true,
+//   minifyWhitespace: true,
+//   plugins: [
+//     scssTransform({
+//       type: "css"
+//     })
+//   ]
+// }).then(result => result.stop)
+// .catch(error => console.error(error));
