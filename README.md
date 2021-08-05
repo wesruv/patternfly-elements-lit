@@ -48,6 +48,11 @@ is rewritten to
 import PfeCard from "../../pfe-card/built/pfe-card.js";
 ```
 
+### Generate a new component
+```
+npm run new
+```
+
 ## Differences from v1.0 of PatternFly Elements
 ### The PFElement base class extends LitElement
 Extending LitElement provides multiple benefits
