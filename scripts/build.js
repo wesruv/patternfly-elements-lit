@@ -43,33 +43,33 @@ esbuild.build({
 }).then(result => result.stop)
   .catch(error => console.error(error));
 
-// // Build PFElement
-// esbuild.build({
-//   entryPoints: [
-//     "elements/pfelement/src/pfelement.ts",
-//   ],
-//   outdir: "elements/pfelement/dist",
-//   format: "esm",
-//   watch: Boolean(process.env.WATCH) || false,
-//   bundle: true,
-//   minify: true,
-//   minifyWhitespace: true
-// }).then(result => result.stop)
-// .catch(error => console.error(error));
+// Build PFElement
+esbuild.build({
+  entryPoints: [
+    "elements/pfelement/src/pfelement.ts",
+  ],
+  outdir: "elements/pfelement/dist",
+  format: "esm",
+  watch: Boolean(process.env.WATCH) || false,
+  bundle: true,
+  minify: true,
+  minifyWhitespace: true
+}).then(result => result.stop)
+.catch(error => console.error(error));
 
-// // Build some Sass
-// esbuild.build({
-//   entryPoints: [
-//     "elements/pfelement/src/pfelement.scss",
-//   ],
-//   outdir: "elements/pfelement/dist",
-//   watch: Boolean(process.env.WATCH) || false,
-//   minify: true,
-//   minifyWhitespace: true,
-//   plugins: [
-//     scssTransform({
-//       type: "css"
-//     })
-//   ]
-// }).then(result => result.stop)
-// .catch(error => console.error(error));
+// Build some Sass
+esbuild.build({
+  entryPoints: [
+    "elements/pfelement/src/pfelement.scss",
+  ],
+  outdir: "elements/pfelement/dist",
+  watch: Boolean(process.env.WATCH) || false,
+  minify: true,
+  minifyWhitespace: true,
+  plugins: [
+    scssTransform({
+      type: "css"
+    })
+  ]
+}).then(result => result.stop)
+.catch(error => console.error(error));
