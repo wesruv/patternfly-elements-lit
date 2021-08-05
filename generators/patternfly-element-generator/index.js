@@ -14,7 +14,7 @@ module.exports = class extends Generator {
     this.env.options.nodePackageManager = "npm";
   }
 
-  async prompting() {
+  prompting() {
     const done = this.async();
     this.log(yosay(`Welcome to the ${chalk.red("PatternFly Elements")} generator!`));
 
