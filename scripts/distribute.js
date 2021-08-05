@@ -13,6 +13,7 @@ import rewritePaths from "./utilities/esbuild-plugins/rewrite-paths/index.js";
 
 esbuild.build({
   entryPoints: [
+    "elements/pfe-avatar/dist/pfe-avatar.js",
     "elements/pfe-badge/dist/pfe-badge.js",
     "elements/pfe-button/dist/pfe-button.js",
     "elements/pfe-card/dist/pfe-card.js",

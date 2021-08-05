@@ -292,6 +292,15 @@ export class PFElement extends LitElement {
     }
   }
 
+  cssVariable(name, value, element = this) {
+    name = name.substr(0, 2) !== "--" ? "--" + name : name;
+    if (value) {
+      element.style.setProperty(name, value);
+      return value;
+    }
+    return window.getComputedStyle(element).getPropertyValue(name).trim() || null;
+  }
+
   /**
    * A wrapper around an event dispatch to standardize formatting.
    */

@@ -3,6 +3,7 @@ import scssTransform from "./utilities/esbuild-plugins/scss-transform/index.js";
 
 esbuild.build({
   entryPoints: [
+    "elements/pfe-avatar/src/pfe-avatar.ts",
     "elements/pfe-cta/src/pfe-cta.ts",
     "elements/pfe-card/src/pfe-card.ts",
     "elements/pfe-badge/src/pfe-badge.ts",
