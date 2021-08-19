@@ -56,16 +56,20 @@ export class PfeClipboard extends PFElement {
       noIcon: {
         title: "No icon",
         type: Boolean,
+        attribute: "no-icon"
       },
       copiedDuration: {
         title: "Success message duration (in seconds)",
         type: Number,
+        attribute: "copied-duration"
       },
       role: {
         type: String,
+        reflect: true
       },
       tabindex: {
         type: Number,
+        reflect: true
       },
     };
   }
@@ -75,7 +79,7 @@ export class PfeClipboard extends PFElement {
     this.noIcon = false;
     this.copiedDuration = 3;
     this.copiedDuration = 3;
-    this.role = 'button';
+    this.role = "button";
     this.tabindex = 0;
   }
 
@@ -91,7 +95,6 @@ export class PfeClipboard extends PFElement {
   disconnectedCallback() {
     this.removeEventListener("click", this._clickHandler.bind(this));
     this.removeEventListener("keydown", this._keydownHandler.bind(this));
-    this.shadowRoot.removeEventListener("slotchange", this._slotchangeHandler.bind(this));
     super.disconnectedCallback();
   }
 
