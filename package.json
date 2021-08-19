@@ -10,6 +10,7 @@
     "test:watch": "npm config set group=default && npm config set element=\"*\" && web-test-runner \"elements/*/test/$npm_config_element.spec.js\" --node-resolve --playwright --watch --group=$npm_config_group",
     "test:ci": "web-test-runner --node-resolve --playwright",
     "bootstrap": "lerna bootstrap --hoist",
+    "link": "lerna link",
     "new": "yo ./generators/patternfly-element-generator"
   },
   "type": "module",

@@ -132,7 +132,10 @@ module.exports = class extends Generator {
     }
   }
 
-  end() {
-    this.spawnCommand("npm", ["run", "build"]);
+  async end() {
+    // link the node_modules to the new directory
+    await this.spawnCommand("npm", ["run", "link"]);
+    // re-run the build step
+    await this.spawnCommand("npm", ["run", "build"]);
   }
 }
