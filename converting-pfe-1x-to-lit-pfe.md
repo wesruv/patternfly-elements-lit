@@ -2,6 +2,16 @@
 
 ## Properties (aka `static get properties`)
 
+### `reflect`
+In PFE attributes are updated when the property value changes, in Lit Element it's opt-in. To opt in, set reflect to true.
+
+```js
+  active: {
+    type: Boolean,
+    reflect: true,
+  },
+```
+
 ### `attr => attribute`
 `attr` in PFElement 1.x was the preferred attribute name, in Lit, the property `attribute` can be the preferred name, or `false` if no attribute is desired.
 
