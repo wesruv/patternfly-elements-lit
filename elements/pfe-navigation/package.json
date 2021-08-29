@@ -1,0 +1,24 @@
+{
+  "name": "@patternfly/pfe-navigation",
+  "version": "2.0.0",
+  "description": "> TODO: description",
+  "type": "module",
+  "main": "dist/pfe-navigation",
+  "module": "dist/pfe-navigation",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "node build.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@patternfly/pfelement": "^2.0.0",
+    "lit": "^2.0.0-rc.2"
+  },
+  "devDependencies": {
+    "@patternfly/pfe-sass": "^1.10.1"
+  }
+}
