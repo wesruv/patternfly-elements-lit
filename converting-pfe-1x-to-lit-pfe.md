@@ -2,6 +2,13 @@
 
 ## Properties (aka `static get properties`)
 
+### constructor && connectedCallback will not have a shadowRoot
+
+Unlike PFE the component does not render before the connected callback. Any initialization code that requires the shadowRoot to exist can be put into `firstUpdated()`. This function will run on after the first render.
+
+[See Lit Docs for more](https://lit-element.polymer-project.org/guide/lifecycle#firstupdated)
+
+
 ### `reflect`
 In PFE attributes are updated when the property value changes, in Lit Element it's opt-in. To opt in, set reflect to true.
 
