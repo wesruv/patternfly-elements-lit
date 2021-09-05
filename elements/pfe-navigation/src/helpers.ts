@@ -5,8 +5,9 @@
  * @param {string} needle What we're checking for
  * @return {boolean}
  */
-function stringStartsWith(haystack, needle) {
-  return haystack.substring(0, needle.length) === needle;
+export const stringStartsWith = (haystack: string, needle: string) => {
+  const doesIt: boolean = haystack.substring(0, needle.length) === needle;
+  return doesIt;
 }
 
 /**
@@ -17,7 +18,7 @@ function stringStartsWith(haystack, needle) {
  * @param {number} delay How long until it will be run
  * @param {boolean} immediate Whether it should be run at the start instead of the end of the debounce
  */
-function debounce(func, delay, immediate = false) {
+export const debounce = (func: Function, delay: number, immediate: boolean = false) => {
   var timeout;
   return function () {
     var context = this,
@@ -33,4 +34,12 @@ function debounce(func, delay, immediate = false) {
   };
 }
 
-const _isCrustyBrowser = () => window.ShadyCSS && !window.ShadyCSS.nativeShadow;
+/**
+ * Detect browsers that can't support shadowDOM natively
+ * @returns {boolean} True if browser can support shadow DOM
+ */
+export const _isCrustyBrowser = () => {
+  // @ts-ignore
+  const isIt: boolean = window.ShadyCSS && !window.ShadyCSS.nativeShadow;
+  return isIt;
+};
